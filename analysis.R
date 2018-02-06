@@ -19,6 +19,7 @@ qsorts <- as.data.frame(t(raw.data[!duplicated(raw.data[,3:38]),3:38]))
 colnames(qsorts) <- raw.data[!duplicated(raw.data[,3:38]),]$sid
 
 
+
 # 1 analysis ----
 
 # setting the variables
@@ -30,7 +31,9 @@ results <-  qmethod(qsorts,
                     rotation = "varimax", # Can be replaced by "none"
                     forced = TRUE)
 
-## Check factor loadings
+
+
+# 2 check factor loadings ----
 
 # See the factor loadings
 round(results$loa, digits = 2)
@@ -41,7 +44,9 @@ results$flag
 # Eigenvalues, total explained variability, and number of Q-sorts significantly loading
 results$f_char$characteristics # apperently eigenvalues > 1 are the Kaiser (1960) rule for maintaining factors ...?
 
-## See the results
+
+
+# 3 See the results ----
 summary(results)
 
 # Plot the z-scores for statements
@@ -66,6 +71,10 @@ scores[order(scores$zsc_f1, decreasing = T), ]
 
 # Full table
 results$qdc
+
+
+
+# 4 obtain consensus and distinguishing statements ----
 
 # Consensus statements
 results$qdc[which(results$qdc$dist.and.cons == "Consensus"), ]
