@@ -29,3 +29,50 @@ results <-  qmethod(qsorts,
                     nfactors = factors,
                     rotation = "varimax", # Can be replaced by "none"
                     forced = TRUE)
+
+## Check factor loadings
+
+# See the factor loadings
+round(results$loa, digits = 2)
+
+# See the flagged Q-sorts: those indicating 'TRUE'
+results$flag
+
+# Eigenvalues, total explained variability, and number of Q-sorts significantly loading
+results$f_char$characteristics # apperently eigenvalues > 1 are the Kaiser (1960) rule for maintaining factors ...?
+
+## See the results
+summary(results)
+
+# Plot the z-scores for statements
+# Statements are sorted from highest consensus (bottom) to highest disagreement (top).
+
+plot(results)
+
+# Reorder the statements from highest to lowest scores for each factor
+# Put z-scores and factor scores together
+scores <- cbind(round(results$zsc, digits=2), results$zsc_n)
+nfactors <- ncol(results$zsc)
+col.order <- as.vector(rbind(1:nfactors, (1:nfactors)+nfactors))
+scores <- scores[col.order]
+scores
+
+# Order the table from highest to lowest z-scores for factor 1
+scores[order(scores$zsc_f1, decreasing = T), ]
+# (to order according to other factors, replace 'f1' for 'f2' etc.)
+
+# Explore the table of distinguishing and consensus statements
+# See a detailed explanation of this table in Zabala (2014, pp. 167-8).
+
+# Full table
+results$qdc
+
+# Consensus statements
+results$qdc[which(results$qdc$dist.and.cons == "Consensus"), ]
+
+# Statements distinguishing all factors
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes all"), ]
+
+# Statements distinguishing factor 1 (for results of > 2 factors)
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f1 only"), ]
+
