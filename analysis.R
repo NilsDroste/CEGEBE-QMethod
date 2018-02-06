@@ -86,3 +86,8 @@ results$qdc[which(results$qdc$dist.and.cons == "Distinguishes all"), ]
 # Statements distinguishing factor 1 (for results of > 2 factors)
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f1 only"), ]
 
+
+
+# 5 TODOs ----
+
+# check the bootstrapping algorithm fom Zabala, Unai (2016) @ http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0148087
