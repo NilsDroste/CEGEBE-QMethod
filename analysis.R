@@ -51,6 +51,7 @@ summary(results)
 
 # Plot the z-scores for statements
 # Statements are sorted from highest consensus (bottom) to highest disagreement (top).
+# Filled symbols indicate distinguishing statements
 
 plot(results)
 
