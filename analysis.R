@@ -9,4 +9,5 @@
 library(qmethod)
 
 # reading data
-qsorts <- read.csv(paste(getwd(),"/data/TESTING_A_QMethod_comparative_study_on_Circular_Green_and_BioEconomy_approaches_1_0_TESTING.csv",sep = ""), header = T, sep = ';')
+raw.data <- read.csv(paste(getwd(),"/data/TESTING_A_QMethod_comparative_study_on_Circular_Green_and_BioEconomy_approaches_1_0_TESTING.csv",sep = ""), header = T, sep = ';')
+
