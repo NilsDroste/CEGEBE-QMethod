@@ -9,7 +9,8 @@
 library(qmethod)
 
 # reading data #might need some specifications because we have had changes in the questionnaire while saving all to the same file
-raw.data <- read.csv(paste(getwd(),"/data/A_QMethod_comparative_study_on_Circular_Green_and_BioEconomy_approaches_1_0.csv",sep = ""), header = T, sep = ';', nrows=13)
+raw.data <- read.csv(paste(getwd(),"/data/A_QMethod_comparative_study_on_Circular_Green_and_BioEconomy_approaches_1_0.csv",sep = ""), header = T, sep = ';')
+statements <- read.csv(paste(getwd(),"/data/statements.csv",sep = ""),header=T, stringsAsFactors = F,sep=",")
 
 # check for duplicates
 duplicated(raw.data[,3:38])
