@@ -9,7 +9,7 @@
 library(qmethod)
 
 # reading data #might need some specifications because we have had changes in the questionnaire while saving all to the same file
-raw.data <- read.csv(paste(getwd(),"/data/TESTING_A_QMethod_comparative_study_on_Circular_Green_and_BioEconomy_approaches_1_0_TESTING.csv",sep = ""), header = T, sep = ';', nrows=13)
+raw.data <- read.csv(paste(getwd(),"/data/A_QMethod_comparative_study_on_Circular_Green_and_BioEconomy_approaches_1_0.csv",sep = ""), header = T, sep = ';', nrows=13)
 
 # check for duplicates
 duplicated(raw.data[,3:38])
@@ -85,6 +85,10 @@ results$qdc[which(results$qdc$dist.and.cons == "Distinguishes all"), ]
 
 # Statements distinguishing factor 1 (for results of > 2 factors)
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f1 only"), ]
+# Statements distinguishing factor 2 (for results of > 2 factors)
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f2 only"), ]
+# Statements distinguishing factor 3 (for results of > 2 factors)
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f3 only"), ]
 
 
 
