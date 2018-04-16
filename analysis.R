@@ -113,5 +113,5 @@ write.xlsx(res,"QMethodResults.xls", sheetName="Results")
 
 # check the bootstrapping algorithm fom Zabala, Unai (2016) @ http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0148087
 
-bs_results <- qmboots(qsorts,nfactors = 8,nsteps=10000)
+bs_results <- qmboots(qsorts,nfactors = 8,nsteps=1000)
 
