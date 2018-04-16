@@ -24,7 +24,7 @@ colnames(qsorts) <- raw.data[!duplicated(raw.data[,3:38]),]$sid
 # 1 analysis ----
 
 # setting the variables
-factors <- 3 # The number of factors to extract and rotate # TODO: understand what this is
+factors <- 8 # The number of factors to extract and rotate # TODO: understand what this is
 
 # run the analysis
 results <-  qmethod(qsorts, 
@@ -73,8 +73,7 @@ scores[order(scores$zsc_f1, decreasing = T), ]
 
 # Full table
 results$qdc
-
-
+View(as.data.frame(results$qdc))
 
 # 4 obtain consensus and distinguishing statements ----
 
@@ -84,15 +83,35 @@ results$qdc[which(results$qdc$dist.and.cons == "Consensus"), ]
 # Statements distinguishing all factors
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes all"), ]
 
-# Statements distinguishing factor 1 (for results of > 2 factors)
+#(for results of > 2 factors)
+# Statements distinguishing factor 1 
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f1 only"), ]
-# Statements distinguishing factor 2 (for results of > 2 factors)
+# Statements distinguishing factor 2 
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f2 only"), ]
-# Statements distinguishing factor 3 (for results of > 2 factors)
+# Statements distinguishing factor 3 
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f3 only"), ]
+# Statements distinguishing factor 4 
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f4 only"), ]
+# Statements distinguishing factor 5 
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f5 only"), ]
+# Statements distinguishing factor 6 
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f6 only"), ]
+# Statements distinguishing factor 7 
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f7 only"), ]
+# Statements distinguishing factor 8 
+results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f8 only"), ]
 
 
 
-# 5 TODOs ----
+# 5 write out data to xls ----
+library(xlsx)
+res <- as.data.frame(results$qdc)
+rownames(res) <- statements[,2]
+write.xlsx(res,"QMethodResults.xls", sheetName="Results")
+
+# 6 TODOs ----
 
 # check the bootstrapping algorithm fom Zabala, Unai (2016) @ http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0148087
+
+bs_results <- qmboots(qsorts,nfactors = 8,nsteps=10000)
+
