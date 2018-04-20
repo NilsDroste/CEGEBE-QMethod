@@ -106,10 +106,15 @@ results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f8 only"), ]
 
 
 # 5 write out data to xls ----
+
 library(xlsx)
 res <- as.data.frame(results$qdc)
 rownames(res) <- statements[,2]
 write.xlsx(res,"QMethodResults.xls", sheetName="Results")
+
+rownames(scores) <- statements[,2]
+write.xlsx(scores,"QMethod_z-scores.xls", sheetName="Z-Scores")
+
 
 # 6 TODOs ----
 
