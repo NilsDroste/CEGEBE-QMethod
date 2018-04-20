@@ -54,7 +54,9 @@ summary(results)
 # Statements are sorted from highest consensus (bottom) to highest disagreement (top).
 # Filled symbols indicate distinguishing statements
 
+# png("factor_plot.png", width=1500, height=1000, units="px",res=150) #used for printing out results to png
 plot(results)
+# dev.off() #needed for printing plot
 
 # Reorder the statements from highest to lowest scores for each factor
 # Put z-scores and factor scores together
