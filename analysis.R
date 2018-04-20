@@ -24,7 +24,19 @@ colnames(qsorts) <- raw.data[!duplicated(raw.data[,3:38]),]$sid
 # 1 analysis ----
 
 # setting the variables
-factors <- 8 # The number of factors to extract and rotate # TODO: understand what this is
+factors <- 3 # The number of factors to extract and rotate
+
+# alternative method to define number of factors: scree from https://www.statmethods.net/advstats/factor.html 
+library(nFactors)
+# TODO: check because eigenvalues computed by this method are NOT equal to the one computed by qmethod
+# Reason: eigenvals in qmethod()/qfacharact() are computed as colSums(as.data.frame(unclass(principal(cor(qsorts, method = "pearson"), nfactors = 2, rotate = "varimax")$loadings))^2) which is the same as what is reported as "SS loadings" in principal() and is basically sum of squared loading 
+
+ap <- parallel(subject=nrow(qsorts),var=ncol(qsorts), rep=100,cent=.05)
+ev <- eigen(cor(qsorts, method = "pearson"))
+nS <- nScree(x=ev$values, aparallel=ap$eigen$qevpea, model="components")
+nS
+plotnScree(nS)
+
 
 # run the analysis
 results <-  qmethod(qsorts, 
@@ -44,7 +56,6 @@ results$flag
 
 # Eigenvalues, total explained variability, and number of Q-sorts significantly loading
 results$f_char$characteristics # apperently eigenvalues > 1 are the Kaiser (1960) rule for maintaining factors ...?
-
 
 
 # 3 See the results ----
