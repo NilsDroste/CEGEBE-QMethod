@@ -75,7 +75,7 @@ scores[order(scores$zsc_f1, decreasing = T), ]
 
 # Full table
 results$qdc
-View(as.data.frame(results$qdc))
+View(results$qdc)
 
 # 4 obtain consensus and distinguishing statements ----
 
@@ -108,7 +108,7 @@ results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f8 only"), ]
 # 5 write out data to xls ----
 
 library(xlsx)
-res <- as.data.frame(results$qdc)
+res <- results$qdc
 rownames(res) <- statements[,2]
 write.xlsx(res,"QMethodResults.xls", sheetName="Results")
 
