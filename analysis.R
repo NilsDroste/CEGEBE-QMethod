@@ -65,9 +65,9 @@ summary(results)
 # Statements are sorted from highest consensus (bottom) to highest disagreement (top).
 # Filled symbols indicate distinguishing statements
 
-# png("factor_plot.png", width=1500, height=1000, units="px",res=150) #used for printing out results to png
+#png("factor_plot.png", width=1500, height=1000, units="px",res=150) #used for printing out results to png
 plot(results)
-# dev.off() #needed for printing plot
+#dev.off() #needed for printing plot
 
 # Reorder the statements from highest to lowest scores for each factor
 # Put z-scores and factor scores together
@@ -86,7 +86,7 @@ scores[order(scores$zsc_f1, decreasing = T), ]
 
 # Full table
 results$qdc
-View(results$qdc)
+#View(results$qdc)
 
 # 4 obtain consensus and distinguishing statements ----
 
@@ -103,17 +103,6 @@ results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f1 only"), ]
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f2 only"), ]
 # Statements distinguishing factor 3 
 results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f3 only"), ]
-# Statements distinguishing factor 4 
-results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f4 only"), ]
-# Statements distinguishing factor 5 
-results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f5 only"), ]
-# Statements distinguishing factor 6 
-results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f6 only"), ]
-# Statements distinguishing factor 7 
-results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f7 only"), ]
-# Statements distinguishing factor 8 
-results$qdc[which(results$qdc$dist.and.cons == "Distinguishes f8 only"), ]
-
 
 
 # 5 write out data to xls ----
