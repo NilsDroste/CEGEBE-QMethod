@@ -116,6 +116,9 @@ rownames(scores) <- statements[,2]
 write.xlsx(scores,"QMethod_z-scores.xls", sheetName="Z-Scores")
 
 
+write.xlsx(as.data.frame(results$flag),"QMethods_Flags.xls", sheetName="Flags")
+
+
 # 6 TODOs ----
 
 # check the bootstrapping algorithm fom Zabala, Unai (2016) @ http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0148087
