@@ -119,11 +119,43 @@ write.xlsx(scores,"QMethod_z-scores.xls", sheetName="Z-Scores")
 write.xlsx(as.data.frame(results$flag),"QMethods_Flags.xls", sheetName="Flags")
 
 
-# 6 TODOs ----
+# 6 bootstrap ----
 
-# check the bootstrapping algorithm fom Zabala, Unai (2016) @ http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0148087
+# TODO: check the bootstrapping algorithm fom Zabala, Unai (2016) @ http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0148087
 
-# bs_results <- qmboots(qsorts,nfactors = 8,nsteps=1000) #at least sample size times 40 steps, takes time.
-#qmb.summary(bs_results)
-#qmb.plot(qmb.summary(bs_results))
+set.seed(456) #setting seed / random number for reproducibility reasons
+bs_results <- qmboots(qsorts,nfactors = 3,nsteps=1000) #at least sample size times 40 steps, takes time. This is the bootstrapping
+qmb.summary(bs_results) # gives the results
+# cbind(qmb_sum$qsorts[,10:12],as.data.frame(results$flag)[order(rownames(as.data.frame(results$flag))),]) # to compare automatic flagging by standard qmethod and bootstrapping. Only flag for statement 2071129 should apparently be set for factor 2 or 3, but none has a high flagging freq
 
+# plotting of results by either factors or z-scors, and sorted by difference or standard dev.
+qmb.plot(qmb.summary(bs_results),type="loa",nfactors = 3,sort="difference")
+qmb.plot(qmb.summary(bs_results),type="loa",nfactors = 3,sort="sd")
+qmb.plot(qmb.summary(bs_results),type="zsc",nfactors = 3,sort="difference")
+qmb.plot(qmb.summary(bs_results),type="zsc",nfactors = 3,sort="sd")
+
+
+qmb.summary(bs_results)$statements#[,13:21]
+qmb.summary(bs_results)$qsorts
+
+#results based on bootstrapping
+
+# consensus and distinguishing factors
+res.bts <- qdc(qsorts,nfactors=3,qmb.summary(bs_results)$statements[,c(4,6,8)], qfcharact(as.data.frame(unclass(principal(cor(qsorts, method = "pearson"),nfactors = nfactors, rotate="varimax")$loadings)),qflag(qmb.summary(bs_results)$qsorts[,c(4,6,8)],36),qmb.summary(bs_results)$statements[,c(4,6,8)],3,qmb.summary(bs_results)$qsorts[,c(4,6,8)])$sd_dif) # complicated form of accessing comparable results to standard qmethod algorithm...
+
+#scores
+scores.bts <- as.data.frame(cbind(round(qmb.summary(bs_results)$statements[,4],2),qmb.summary(bs_results)$statements[,16],round(qmb.summary(bs_results)$statements[,6],2),qmb.summary(bs_results)$statements[,17],round(qmb.summary(bs_results)$statements[,8],2),qmb.summary(bs_results)$statements[,18]))
+
+#flags
+flags_bts <- qflag(qmb.summary(bs_results)$qsorts[,c(4,6,8)],36)
+
+#write out data
+rownames(res.bts) <- statements[,2]
+write.xlsx(res.bts,"QMethodResults_bootstrap.xls", sheetName="Bootstrap results")
+
+names(scores.bts) <- c("zsc_f1_bts", "fsc_f1_bts", "zsc_f2_bts", "fsc_f2_bts", "zsc_f3_bts", "fsc_f3_bts")
+rownames(scores.bts) <- statements[,2]
+write.xlsx(scores.bts,"QMethod_z-scores_bootstrap.xls", sheetName="Bootstrap Scores")
+
+
+write.xlsx(as.data.frame(flags_bts),"QMethods_Flags_bootstrap.xls", sheetName="Bootstrap Flags")
