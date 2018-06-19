@@ -141,7 +141,7 @@ qmb.summary(bs_results)$qsorts
 #results based on bootstrapping
 
 # consensus and distinguishing factors
-res.bts <- qdc(qsorts,nfactors=3,qmb.summary(bs_results)$statements[,c(4,6,8)], qfcharact(as.data.frame(unclass(principal(cor(qsorts, method = "pearson"),nfactors = nfactors, rotate="varimax")$loadings)),qflag(qmb.summary(bs_results)$qsorts[,c(4,6,8)],36),qmb.summary(bs_results)$statements[,c(4,6,8)],3,qmb.summary(bs_results)$qsorts[,c(4,6,8)])$sd_dif) # complicated form of accessing comparable results to standard qmethod algorithm...
+res.bts <- qdc(qsorts,nfactors=factors,qmb.summary(bs_results)$statements[,c(4,6,8)], qfcharact(as.data.frame(unclass(principal(cor(qsorts, method = "pearson"),nfactors = factors, rotate="varimax")$loadings)),qflag(qmb.summary(bs_results)$qsorts[,c(4,6,8)],36),qmb.summary(bs_results)$statements[,c(4,6,8)],3,qmb.summary(bs_results)$qsorts[,c(4,6,8)])$sd_dif) # complicated form of accessing comparable results to standard qmethod algorithm...
 
 #scores
 scores.bts <- as.data.frame(cbind(round(qmb.summary(bs_results)$statements[,4],2),qmb.summary(bs_results)$statements[,16],round(qmb.summary(bs_results)$statements[,6],2),qmb.summary(bs_results)$statements[,17],round(qmb.summary(bs_results)$statements[,8],2),qmb.summary(bs_results)$statements[,18]))
@@ -157,5 +157,12 @@ names(scores.bts) <- c("zsc_f1_bts", "fsc_f1_bts", "zsc_f2_bts", "fsc_f2_bts", "
 rownames(scores.bts) <- statements[,2]
 write.xlsx(scores.bts,"QMethod_z-scores_bootstrap.xls", sheetName="Bootstrap Scores")
 
-
 write.xlsx(as.data.frame(flags_bts),"QMethods_Flags_bootstrap.xls", sheetName="Bootstrap Flags")
+
+png("Results_Zscores_Bootstrap.png", width = 600, height = 600, units = "px")
+qmb.plot(qmb.summary(bs_results),type="zsc",nfactors = 3,sort="difference")
+dev.off()
+
+png("Results_Loadings_Bootstrap.png", width = 600, height = 600, units = "px")
+qmb.plot(qmb.summary(bs_results),type="zsc",nfactors = 3,sort="difference")
+dev.off()
