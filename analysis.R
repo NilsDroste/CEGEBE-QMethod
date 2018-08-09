@@ -21,24 +21,41 @@ colnames(qsorts) <- raw.data[!duplicated(raw.data[,3:38]),]$sid
 
 
 
-# 1 analysis ----
+# 1 standard analysis ----
 
-# setting the variables
-factors <- 3 # The number of factors to extract and rotate
 
-# alternative method to define number of factors: scree from https://www.statmethods.net/advstats/factor.html 
+# one method to define number of factors: scree from https://www.statmethods.net/advstats/factor.html 
 library(nFactors)
 # TODO: check because eigenvalues computed by this method are NOT equal to the one computed by qmethod
 # Reason: eigenvals in qmethod()/qfacharact() are computed as colSums(as.data.frame(unclass(principal(cor(qsorts, method = "pearson"), nfactors = 2, rotate = "varimax")$loadings))^2) which is the same as what is reported as "SS loadings" in principal() and is basically sum of squared loading 
-
 ap <- parallel(subject=nrow(qsorts),var=ncol(qsorts), rep=100,cent=.05)
 ev <- eigen(cor(qsorts, method = "pearson"))
 nS <- nScree(x=ev$values, aparallel=ap$eigen$qevpea, model="components")
-nS
-plotnScree(nS)
+plotnScree(nS) # says 2 factors only
 
+#compute eigenvalues and explained variance for a variety of factors
+l <- list()
+for (i in 2:9){
+  tmp <-  qmethod(qsorts, 
+                      nfactors = i,
+                      rotation = "varimax", # Can be replaced by "none"
+                      forced = TRUE)
+  s <- summary(tmp)
+  cat("Q resulst for ", i, " factors: \n")
+  explVar <- sum(s[4,])
+  eigVal <- s[3,]
+  l[[i-1]] <- list()
+  l[[i-1]]$factors <- i
+  l[[i-1]]$explVar <-  explVar
+  l[[i-1]]$eigVal <-  eigVal
+  l[[i-1]]$flags <- tmp$flagged
+}
+# l shows that 8 factors have all factor eigenvalues > 1 and expl. variance increases. At the same time, only up to 3 factors at least 2 respondends are flagged for each factor. We thus choose 3 factors. 
 
-# run the analysis
+# setting the variables
+factors <- 3 # The number of factors to extract and rotate
+  
+# run the chosen analysis
 results <-  qmethod(qsorts, 
                     nfactors = factors,
                     rotation = "varimax", # Can be replaced by "none"
@@ -124,7 +141,7 @@ write.xlsx(as.data.frame(results$flag),"QMethods_Flags.xls", sheetName="Flags")
 # TODO: check the bootstrapping algorithm fom Zabala, Unai (2016) @ http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0148087
 
 set.seed(456) #setting seed / random number for reproducibility reasons
-bs_results <- qmboots(qsorts,nfactors = 3,nsteps=1000) #at least sample size times 40 steps, takes time. This is the bootstrapping
+bs_results <- qmboots(qsorts,nfactors = factors,nsteps=1000) #at least sample size times 40 steps, takes time. This is the bootstrapping
 qmb.summary(bs_results) # gives the results
 # cbind(qmb_sum$qsorts[,10:12],as.data.frame(results$flag)[order(rownames(as.data.frame(results$flag))),]) # to compare automatic flagging by standard qmethod and bootstrapping. Only flag for statement 2071129 should apparently be set for factor 2 or 3, but none has a high flagging freq
 
